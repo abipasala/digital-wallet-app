@@ -5,6 +5,9 @@
    - txns stored in 'pl_txns' as array { id, type, from, to, amount, ts }
    - KYC images stored in IndexedDB under 'pl_db' objectStore 'kyc'
 */
+
+// DWA-31: Page navigation system
+
 (function(){
   const LS_USERS = 'pl_users';
   const LS_CUR = 'pl_current';
@@ -158,6 +161,8 @@ function savePhoneNumber() {
         createTxn({ type: 'TransactionIssue:InsufficientFunds', from, to: toPhone, amount: amt });
         return { success: false, message: 'Insufficient balance', createdGuest: !findUser(toPhone) };
       }
+      // DWA-20: Balance storage and load logic
+
       sender.balance = Number(sender.balance || 0) - amt;
       receiver.balance = Number(receiver.balance || 0) + amt;
       upsertUser(sender); upsertUser(receiver);
