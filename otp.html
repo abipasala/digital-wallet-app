@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paytm-lite — OTP Verify</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-otp">
+  <header class="topbar">
+    <div class="logo">Paytm<span class="lite">Lite</span></div>
+  </header>
+
+  <main class="center-card">
+    <div class="card auth-card">
+      <h1 class="title">Verify Mobile</h1>
+      <p class="muted">Enter the OTP we sent to your mobile.</p>
+
+      <div class="kv">Phone: <span id="otp-phone" class="strong"></span></div>
+
+      <label class="label">Enter OTP</label>
+      <input id="otp-input" class="input" placeholder="Enter OTP" inputmode="numeric" />
+
+      <div class="row">
+        <button id="btn-verify" class="btn primary">Verify & Continue</button>
+        <button id="btn-back" class="btn outline">Back</button>
+      </div>
+
+      <div class="note">
+        <strong>Simulated OTP (demo):</strong> <span id="sim-otp" class="chip">1234</span>
+        <div class="muted small">This demo shows the OTP explicitly to make it easy to demo. In a real app OTP would be delivered via SMS.</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">Built for demo — frontend only</footer>
+
+  <script src="app.js"></script>
+  <script>
+    // get phone from URL
+    const params = new URLSearchParams(location.search);
+    const phone = params.get('phone') || '';
+    document.getElementById('otp-phone').innerText = phone || '(enter phone on previous screen)';
+    document.getElementById('sim-otp').innerText = window.App.getOtpForPhone(phone) || '1234';
+
+    document.getElementById('btn-back').addEventListener('click', () => location.href = 'index.html');
+
+    document.getElementById('btn-verify').addEventListener('click', () => {
+      const otp = document.getElementById('otp-input').value.trim();
+      if (!phone) { alert('No phone specified. Go back and enter phone.'); return; }
+      if (!otp) { alert('Enter OTP'); return; }
+      const ok = window.App.verifyOtpAndLogin(phone, otp);
+      if (!ok) { alert('Invalid OTP'); return; }
+      // navigate to dashboard
+      location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+</html>

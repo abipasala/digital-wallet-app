@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paytm-lite — Add Money</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-add">
+  <header class="topbar">
+    <div class="logo">Paytm<span class="lite">Lite</span></div>
+    <div class="hdr-actions"><button id="btn-back" class="btn outline small">Back</button></div>
+  </header>
+
+  <main class="center-card">
+    <div class="card auth-card">
+      <h2 class="title">Add Money</h2>
+      <label class="label">Amount (INR)</label>
+      <input id="add-amount" class="input" placeholder="e.g. 500" inputmode="numeric" />
+      <label class="label">Payment Method</label>
+      <select id="pay-method" class="input">
+        <option value="card">Debit/Credit Card</option>
+        <option value="upi">UPI (mock)</option>
+        <option value="netbanking">Netbanking</option>
+      </select>
+
+      <div class="row">
+        <button id="btn-add-confirm" class="btn primary">Add Money</button>
+        <button id="btn-add-cancel" class="btn outline">Cancel</button>
+      </div>
+
+      <div class="note muted">
+        This is a demo. Payment is simulated and changes only local storage.
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">Paytm-lite demo • frontend-only</footer>
+
+  <script src="app.js"></script>
+  <script>
+    if (!window.App.getCurrentUser()) location.href = 'index.html';
+    document.getElementById('btn-back').addEventListener('click', () => location.href = 'dashboard.html');
+    document.getElementById('btn-add-cancel').addEventListener('click', () => location.href = 'dashboard.html');
+    document.getElementById('btn-add-confirm').addEventListener('click', () => {
+      const amt = Number(document.getElementById('add-amount').value);
+      if (!amt || amt <= 0) { alert('Enter a valid amount'); return; }
+      window.App.addMoney(amt);
+      alert('Payment simulated: Amount added to wallet');
+      location.href = 'dashboard.html';
+    });
+  </script>
+</body>
+</html>

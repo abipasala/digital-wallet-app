@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paytm-lite — Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-login">
+  <header class="topbar">
+    <div class="logo">Paytm<span class="lite">Lite</span></div>
+  </header>
+
+  <main class="center-card">
+    <div class="card auth-card">
+      <h1 class="title">Welcome to PaytmLite</h1>
+      <p class="muted">Fast. Secure. Demo-mode. No backend — all local.</p>
+
+      <label class="label">Mobile Number</label>
+      <input id="phone" class="input" placeholder="Enter 10-digit mobile number" inputmode="numeric" />
+
+      <div class="row">
+        <button id="btn-request-otp" class="btn primary">Send OTP</button>
+        <button id="btn-go-otp" class="btn outline">I already have OTP</button>
+      </div>
+
+      <div class="note">
+        <strong>Demo note:</strong> OTP is simulated. You will be redirected to the OTP screen which clearly shows the simulated OTP for demonstration.
+      </div>
+
+      <div class="footer-small muted">Tip: For demo create any phone number — e.g., <code>9876543210</code>.</div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    Built for demo — frontend only
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    // page-specific bindings
+    document.getElementById('btn-request-otp').addEventListener('click', () => {
+      const phone = document.getElementById('phone').value.trim();
+      if (!/^\d{10}$/.test(phone)) { alert('Enter a 10-digit phone number'); return; }
+      // create user record in localStorage and set simulated OTP
+      window.App.createUserWithOtp(phone);
+      // navigate to OTP page with phone param
+      location.href = `otp.html?phone=${phone}`;
+    });
+    document.getElementById('btn-go-otp').addEventListener('click', () => {
+      const phone = document.getElementById('phone').value.trim();
+      location.href = `otp.html?phone=${phone || ''}`;
+    });
+  </script>
+</body>
+</html>

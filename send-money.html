@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paytm-lite — Send Money</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-send">
+  <header class="topbar">
+    <div class="logo">Paytm<span class="lite">Lite</span></div>
+    <div class="hdr-actions"><button id="btn-back" class="btn outline small">Back</button></div>
+  </header>
+
+  <main class="center-card">
+    <div class="card auth-card">
+      <h2 class="title">Send Money</h2>
+
+      <label class="label">To (Phone)</label>
+      <input id="send-phone" class="input" placeholder="Receiver phone" inputmode="numeric" />
+
+      <label class="label">Amount (INR)</label>
+      <input id="send-amount" class="input" placeholder="e.g. 250" inputmode="numeric" />
+
+      <div class="row">
+        <button id="btn-send-confirm" class="btn primary">Send</button>
+        <button id="btn-send-cancel" class="btn outline">Cancel</button>
+      </div>
+
+      <div class="note muted">
+        Transfers are simulated and update only local data. If receiver does not exist, a guest account is created.
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">Paytm-lite demo • frontend-only</footer>
+
+  <script src="app.js"></script>
+  <script>
+    if (!window.App.getCurrentUser()) location.href = 'index.html';
+    document.getElementById('btn-back').addEventListener('click', () => location.href = 'dashboard.html');
+    document.getElementById('btn-send-cancel').addEventListener('click', () => location.href = 'dashboard.html');
+    document.getElementById('btn-send-confirm').addEventListener('click', () => {
+      const to = document.getElementById('send-phone').value.trim();
+      const amount = Number(document.getElementById('send-amount').value);
+      if (!/^\d{10}$/.test(to)) { alert('Enter valid 10-digit phone'); return; }
+      if (!amount || amount <= 0) { alert('Enter valid amount'); return; }
+      const result = window.App.sendMoney(to, amount);
+      if (!result.success) {
+        alert(result.message);
+        if (result.createdGuest) {
+          // optionally notify guest created
+        }
+      } else {
+        alert('Money sent successfully');
+        location.href = 'dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>

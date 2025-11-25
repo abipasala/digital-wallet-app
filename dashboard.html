@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paytm-lite — Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-dashboard">
+  <header class="topbar">
+    <div class="logo">Paytm<span class="lite">Lite</span></div>
+    <div class="hdr-actions">
+      <div id="hdr-phone" class="chip muted"></div>
+      <button id="btn-logout" class="btn outline small">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card topcard">
+      <div class="balance-block">
+        <div class="label">Wallet Balance</div>
+        <div id="balance" class="big">₹0.00</div>
+      </div>
+      <div class="quick-actions">
+        <button class="action" id="act-add">Add Money</button>
+        <button class="action" id="act-send">Send</button>
+        <button class="action" id="act-kyc">KYC</button>
+      </div>
+    </section>
+
+    <section class="grid2">
+      <div class="card">
+        <h3>Recent Transactions</h3>
+        <div id="tx-list" class="tx-list">No transactions yet.</div>
+      </div>
+
+      <div class="card">
+        <h3>Account</h3>
+        <div class="kv">Phone: <span id="acc-phone"></span></div>
+        <div class="kv">KYC status: <span id="acc-kyc">Not submitted</span></div>
+        <div style="margin-top:12px">
+          <button id="btn-export" class="btn small">Export Data (JSON)</button>
+          <button id="btn-debug" class="btn small">Debug View</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">Paytm-lite demo • frontend-only</footer>
+
+  <script src="app.js"></script>
+  <script>
+    // on load: ensure logged in
+    if (!window.App.getCurrentUser()) {
+      location.href = 'index.html';
+    } else {
+      window.App.renderDashboardPage();
+    }
+
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      window.App.logout();
+      location.href = 'index.html';
+    });
+
+    document.getElementById('act-add').addEventListener('click', () => location.href = 'add-money.html');
+    document.getElementById('act-send').addEventListener('click', () => location.href = 'send-money.html');
+    document.getElementById('act-kyc').addEventListener('click', () => location.href = 'kyc.html');
+
+    document.getElementById('btn-export').addEventListener('click', () => {
+      const data = window.App.exportAllData();
+      const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'paytm-lite-data.json'; a.click(); URL.revokeObjectURL(url);
+    });
+    document.getElementById('btn-debug').addEventListener('click', () => {
+      alert(JSON.stringify(window.App.debugDump(), null, 2));
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Paytm-lite — KYC</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="page-kyc">
+  <header class="topbar">
+    <div class="logo">Paytm<span class="lite">Lite</span></div>
+    <div class="hdr-actions"><button id="btn-back" class="btn outline small">Back</button></div>
+  </header>
+
+  <main class="center-card">
+    <div class="card auth-card">
+      <h2 class="title">KYC Upload</h2>
+      <p class="muted">Upload a ID image (e.g., Aadhar front). Stored locally for demo purposes.</p>
+
+      <input id="kyc-file" type="file" accept="image/*" />
+      <div class="row">
+        <button id="btn-kyc-upload" class="btn primary">Upload KYC</button>
+        <button id="btn-kyc-check" class="btn outline">Check Status</button>
+      </div>
+
+      <div id="kyc-preview" style="margin-top:12px"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">Paytm-lite demo • frontend-only</footer>
+
+  <script src="app.js"></script>
+  <script>
+    if (!window.App.getCurrentUser()) location.href = 'index.html';
+    document.getElementById('btn-back').addEventListener('click', () => location.href = 'dashboard.html');
+
+    document.getElementById('btn-kyc-upload').addEventListener('click', async () => {
+      const file = document.getElementById('kyc-file').files[0];
+      if (!file) { alert('Choose an image file'); return; }
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        await window.App.storeKyc(window.App.getCurrentUser(), e.target.result);
+        alert('KYC uploaded (demo)');
+        document.getElementById('kyc-preview').innerHTML = `<img src="${e.target.result}" style="max-width:220px;border-radius:8px"/>`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById('btn-kyc-check').addEventListener('click', async () => {
+      const rec = await window.App.getKyc(window.App.getCurrentUser());
+      if (!rec) { alert('No KYC uploaded yet'); return; }
+      document.getElementById('kyc-preview').innerHTML = `<div class="kv">Status: ${rec.status}</div><img src="${rec.dataUrl}" style="max-width:220px;border-radius:8px"/>`;
+    });
+  </script>
+</body>
+</html>
