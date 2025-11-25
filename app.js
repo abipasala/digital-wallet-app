@@ -22,6 +22,12 @@
       req.onerror = e => rej(e);
     });
   }
+  // DWA-16: Store phone number in localStorage
+function savePhoneNumber() {
+  const phone = document.getElementById("phoneInput").value;
+  localStorage.setItem("phone", phone);
+}
+
   async function saveKyc(phone, dataUrl){
     const db = await openDB();
     return new Promise((res, rej) => {
