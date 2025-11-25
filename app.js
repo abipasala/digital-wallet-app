@@ -91,6 +91,7 @@ function savePhoneNumber() {
       const u = findUser(phone);
       return (u && u.otp) ? u.otp : '1234';
     },
+    // DWA-18: Implement OTP validation logic
 
     verifyOtpAndLogin(phone, otp){
       const u = findUser(phone);
