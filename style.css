@@ -15,6 +15,7 @@
   --glass: rgba(255,255,255,0.7);
   --chip-bg: #eef7fb;
 }
+/* DWA-30: UI animation & polish */
 
 *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#172033}
 html,body{height:100%;margin:0;background:var(--bg)}
