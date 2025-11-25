@@ -12,10 +12,11 @@
   --danger:#d9534f;
   --shadow: 0 6px 20px rgba(15,76,129,0.08);
   --radius:12px;
-  --glass: rgba(255,255,255,0.7);
+  --glass: rgba(215, 109, 109, 0.7);
   --chip-bg: #eef7fb;
 }
 /* DWA-30: UI animation & polish */
+/* DWA-32: Responsive Mobile Layout */
 
 *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#172033}
 html,body{height:100%;margin:0;background:var(--bg)}
